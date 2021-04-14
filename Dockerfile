@@ -5,10 +5,11 @@
 FROM alpine as build-env
 RUN apk add --no-cache czmq-dev build-base git
 RUN git clone https://github.com/TimBiernat/zmq.git
-WORKDIR /zmq
-RUN gcc -Wall src/echo.c src/ping.c -lczmq
+WORKDIR /zmq/src
+RUN gcc -Wall echo.c -o echo -lczmq
+RUN gcc -Wall ping.c -o ping -lczmq
 
 FROM alpine
 RUN apk add --no-cache czmq-dev
-COPY --from=build-env /zmq/echo/echo .
-COPY --from=build-env /zmq/ping/ping .
+COPY --from=build-env /zmq/src/echo .
+COPY --from=build-env /zmq/src/ping .
