@@ -26,8 +26,9 @@ int main (int argc, char *argv[]) {
   }
   payload[msg_sz] = '\0';
   req = zsock_new_req (argv[1]); // req -> connect
-  zsock_set_affinity (req, 1); // io thread cpu affinity
-  zsock_set_tos (req, 0b00110000); // DSCP priority, low latency
+  assert(req);
+  // zsock_set_affinity (req, 1); // io thread cpu affinity
+  // zsock_set_tos (req, 0b00110000); // DSCP priority, low latency
   while(true) {
     clock_gettime (CLOCK_MONOTONIC, &start);
     zstr_send (req, payload);
