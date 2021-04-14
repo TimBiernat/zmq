@@ -33,6 +33,7 @@ int main (int argc, char *argv[]) {
     clock_gettime (CLOCK_MONOTONIC, &start);
     zstr_send (req, payload);
     char *string = zstr_recv (req);
+    assert (string);
     clock_gettime (CLOCK_MONOTONIC, &end);
     int result = strcmp (payload, string);
     zstr_free (&string);

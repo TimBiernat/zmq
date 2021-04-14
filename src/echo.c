@@ -21,7 +21,9 @@ int main (int argc, char *argv[]) {
   // zsock_set_tos (rep, 0b00110000); // DSCP: priority, low latency
   while (true) {
     char *string = zstr_recv (rep);
-    zstr_send (rep, string);
+    assert (string);
+    int rc = zstr_send (rep, string);
+    assert (rc == 0);
     zstr_free (&string);
    }
   return 0;
