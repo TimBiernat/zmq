@@ -1,15 +1,16 @@
 # sudo docker build -t tbiernat/echo .
-# sudo docker run -it --name echo --rm -v /tmp:/tmp tbiernat/echo /app/echo ipc:///tmp/test.ipc
+# sudo docker run -it --name echo --rm -v /tmp:/tmp tbiernat/echo /echo ipc:///tmp/test.ipc
 
 FROM alpine as build-env
-RUN apk add --no-cache czmq-dev build-base
+RUN apk add --no-cache czmq-dev build-base git
 
-WORKDIR /app
-COPY . .
+RUN git clone https://github.com/TimBiernat/zmq.git
+
+WORKDIR /zmq/echo
 RUN gcc echo.c -o echo -lczmq
 
 FROM alpine
 RUN apk add --no-cache czmq-dev
-COPY --from=build-env /app/echo /app/echo
+COPY --from=build-env /zmq/echo/echo .
 
-#CMD ["/app/echo","ipc:///tmp/test.ipc"] 
+#CMD ["./echo","ipc:///tmp/test.ipc"] 

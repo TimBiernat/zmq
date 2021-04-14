@@ -1,15 +1,17 @@
 # sudo docker build -t tbiernat/ping .
-# sudo docker run -it --name ping --rm -v /tmp:/tmp tbiernat/ping /app/ping ipc:///tmp/test.ipc 10 256
+# sudo docker run -it --name ping --rm -v /tmp:/tmp tbiernat/ping /ping ipc:///tmp/test.ipc 10 256
 
 FROM alpine as build-env
-RUN apk add --no-cache czmq-dev build-base
+RUN apk add --no-cache czmq-dev build-base git
 
-WORKDIR /app
-COPY . .
+RUN git clone https://github.com/TimBiernat/zmq.git
+
+WORKDIR /zmq/ping
+
 RUN gcc ping.c -o ping -lczmq
 
 FROM alpine
 RUN apk add --no-cache czmq-dev
-COPY --from=build-env /app/ping /app/ping
+COPY --from=build-env /zmq/ping/ping .
 
-#CMD ["/app/ping","ipc:///tmp/test.ipc","10","256"] 
+#CMD ["/ping","ipc:///tmp/test.ipc","10","256"] 
