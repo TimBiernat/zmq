@@ -1,5 +1,6 @@
-includes czmq examples:
+## zeromq container examples
 
-  echo container - reply to a ping 
-
-  ping container - send msg to ping server, expect reply
+  * echo - reply to a ping 
+  * ping - send msg to ping server, expect reply
+  * pub  - publish messages
+  * sub  - subscribe to messages
