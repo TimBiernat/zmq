@@ -32,6 +32,7 @@ int main (int argc, char *argv[]) {
       free(frame);
     }
     free(topic);
+    free(nanos);
     zmsg_destroy(&msg);
   }
   return 0;
