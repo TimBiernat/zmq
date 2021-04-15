@@ -15,21 +15,22 @@ int main (int argc, char *argv[]) {
   }
   zsys_handler_set (NULL);
   signal (SIGINT, cleanup);
-  char *topic;
-  char *frame;
+
   zmsg_t *msg;
+  struct timespec end;
+  char *topic, *nanos, *frame;
   sub = zsock_new_sub (argv[1], "topic");     
   assert(sub);
-  // zsock_set_affinity (rep, 1); // io thread cpu affinity
-  // zsock_set_tos (rep, 0b00110000); // DSCP: priority, low latency
   while (true) {
-    int rc = zsock_recv (sub, "sm", &topic, &msg);
+    int rc = zsock_recv (sub, "ssm", &topic, &nanos, &msg);
     assert(rc == 0);
+    clock_gettime (CLOCK_MONOTONIC, &end);
+    double start_time = atof(nanos);
+    double end_time = (double)end.tv_sec + 1.0e-9*end.tv_nsec;
+    printf("%f\n", (end_time - start_time) * 1000);   // ms
     while(frame = zmsg_popstr(msg)) {
-      printf("> %s", frame);
       free(frame);
     }
-    printf("\n");
     free(topic);
     zmsg_destroy(&msg);
   }

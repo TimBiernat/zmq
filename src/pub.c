@@ -18,7 +18,8 @@ int main (int argc, char *argv[]) {
   zsys_handler_set (NULL);
   signal (SIGINT, cleanup);
 
-  struct timespec start, end, delay;
+  struct timespec start, delay;
+  char buf[100];
   delay.tv_sec = 0;
   delay.tv_nsec = ms * 1000 * 1000;
   char payload[msg_sz];
@@ -28,10 +29,11 @@ int main (int argc, char *argv[]) {
   payload[msg_sz] = '\0';
   pub = zsock_new_pub (argv[1]);     
   assert(pub);
-  // zsock_set_affinity (pub, 1); // io thread cpu affinity
-  // zsock_set_tos (pub, 0b00110000); // DSCP: priority, low latency
   while (true) {
-    zsock_send (pub, "ss", "topic", payload);
+    clock_gettime (CLOCK_MONOTONIC, &start);
+    double start_time = (double)start.tv_sec + 1.0e-9*start.tv_nsec;
+    gcvt(start_time, 12, buf); 
+    zsock_send (pub, "sss", "topic", buf, payload);
     nanosleep (&delay, NULL);
   }
   return 0;
