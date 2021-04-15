@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <czmq.h>
 
 zsock_t *pub;
@@ -7,8 +8,6 @@ void cleanup (int signum){
   zsock_destroy (&pub);
   exit (0);
 }
-
-gcvt (float value, int ndigits, char * buf);
 
 int main (int argc, char *argv[]) {
   if (argc != 4) {
