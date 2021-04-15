@@ -8,6 +8,8 @@ void cleanup (int signum){
   exit (0);
 }
 
+gcvt (float value, int ndigits, char * buf);
+
 int main (int argc, char *argv[]) {
   if (argc != 4) {
     printf ("Usage: ping <url> <delay-ms> <msg-sz>\n");
