@@ -1,4 +1,4 @@
-# docker build -t tbiernat/zmq-examples .
+# docker build --no-cache -t tbiernat/zmq-examples .
 # docker run -it --name echo --rm -v /tmp:/tmp tbiernat/zmq-examples /echo ipc:///tmp/test.ipc
 # docker run -it --name ping --rm -v /tmp:/tmp tbiernat/zmq-examples /ping ipc:///tmp/test.ipc 10 2048
 # docker run -it --name pub --rm -v /tmp:/tmp tbiernat/zmq-examples /pub ipc:///tmp/test.ipc 10 2048
